@@ -1,0 +1,146 @@
+import React, { useState } from "https://esm.sh/react@19";
+import ReactDOM from "https://esm.sh/react-dom@19/client";
+
+const data = [
+  {
+    question: {
+      text: "Which character is the first to reach Super Saiyan God in Dragon Ball Super?",
+      choices: ["Vegeta", "Goku", "Frieza", "Trunks"],
+      correct_choice_index: 1
+    }
+  },
+  {
+    question: {
+      text: "Which Super Saiyan form did Vegeta achieve in the Tournament of Power?",
+      choices: ["Super Saiyan", "SS Blue Evolved", "Super Saiyan God", "Super Saiyan 2"],
+      correct_choice_index: 1
+    }
+  },
+  {
+    question: {
+      text: "Who was the first character to achieve Super Saiyan transformation?",
+      choices: ["Vegeta", "Goku", "Trunks", "Frieza"],
+      correct_choice_index: 1
+    }
+  },
+  {
+    question: {
+      text: "What transformation did Goku achieve in the battle against Frieza in Dragon Ball Super?",
+      choices: ["Super Saiyan", "Super Saiyan Blue", "Super Saiyan God", "Super Saiyan Rose"],
+      correct_choice_index: 1
+    }
+  },
+  {
+    question: {
+      text: "What form does Goku achieve after Super Saiyan Blue in Dragon Ball Super?",
+      choices: ["Ultra Instinct", "Super Saiyan 2", "Super Saiyan 3", "Super Saiyan God"],
+      correct_choice_index: 0
+    }
+  },
+  {
+    question: {
+      text: "Which Super Saiyan form was first achieved by Trunks during the Android Saga?",
+      choices: ["Super Saiyan", "Super Saiyan Blue", "Super Saiyan 2", "Super Saiyan God"],
+      correct_choice_index: 0
+    }
+  },
+  {
+    question: {
+      text: "Who transformed into Super Saiyan Rose in Dragon Ball Super?",
+      choices: ["Goku", "Vegeta", "Goku Black", "Frieza"],
+      correct_choice_index: 2
+    }
+  },
+  {
+    question: {
+      text: "Which character achieved Super Saiyan 2 during the Cell Games?",
+      choices: ["Goku", "Vegeta", "Trunks", "Gohan"],
+      correct_choice_index: 3
+    }
+  }
+];
+
+function AnswerChoices(props) {
+  return (
+    <div className="answer-choice">
+      <div onClick={props.onClick}>{props.answer}</div>
+    </div>
+  );
+}
+
+function NextQuestion(props) {
+  return (
+    <div>
+      <button onClick={props.goToNextQuestion}>Next Question</button>
+      <p>Q{props.currentQuestionNum + 1}</p>
+    </div>
+  );
+}
+
+function Question(props) {
+  return (
+    <div>
+      <div className="question">{props.question}</div>
+      <div className="answers">
+        {props.choices.map((choice, index) => (
+          <AnswerChoices
+            key={index}
+            answer={choice}
+            onClick={() => props.setAnswerState(choice)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [answerState, setAnswerState] = useState(null);
+  const [currentQuestionNum, setCurrentQuestionNum] = useState(0);
+
+  function getCorrectAnswer(questionNum) {
+    let currentQuestion = data[questionNum].question;
+    let correctChoiceIndex = currentQuestion.correct_choice_index;
+    return currentQuestion.choices[correctChoiceIndex];
+  }
+
+  function questionAnswered() {
+    if (answerState === null) {
+      return <p className="prompt">Click an answer above</p>;
+    } else if (answerState === getCorrectAnswer(currentQuestionNum)) {
+      return <p className="prompt">You chose {answerState}. That is correct!</p>;
+    } else {
+      return <p className="prompt">You chose {answerState}. That is incorrect.</p>;
+    }
+  }
+
+  function goToNextQuestion() {
+    if (currentQuestionNum < data.length - 1) {
+      setCurrentQuestionNum(currentQuestionNum + 1);
+      setAnswerState(null);
+    } else {
+      alert("You've finished the trivia!");
+      setCurrentQuestionNum(0);
+      setAnswerState(null);
+    }
+  }
+
+  return (
+    <div className="app">
+      <h1 className="title">Dragon Ball Super Trivia Game!</h1>
+      <Question
+        question={data[currentQuestionNum].question.text}
+        choices={data[currentQuestionNum].question.choices}
+        setAnswerState={setAnswerState}
+      />
+      {questionAnswered()}
+      <NextQuestion
+        currentQuestionNum={currentQuestionNum}
+        goToNextQuestion={goToNextQuestion}
+      />
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);

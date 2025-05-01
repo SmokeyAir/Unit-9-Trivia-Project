@@ -1,0 +1,37 @@
+.app {
+  font-family: sans-serif;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: grey am;
+}
+.title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+.answer-choice {
+  padding: 8px;
+  border: 1px solid #ccc;
+  margin: 5px 0;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+}
+.answer-choice:hover {
+  background-color: #d9d9d9;
+}
+.prompt {
+  margin-top: 10px;
+  font-weight: bold;
+}
+button {
+  padding: 8px 15px;
+  margin-top: 10px;
+  background-color: #4CAF50;
+  color: blue;
+  border: none;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #45a049;
+}
